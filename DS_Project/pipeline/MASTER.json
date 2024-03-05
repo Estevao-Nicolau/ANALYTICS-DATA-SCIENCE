@@ -1,0 +1,72 @@
+{
+	"name": "MASTER",
+	"properties": {
+		"activities": [
+			{
+				"name": "SRC_TO_BRONZE",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "SRC_TO_BRZ",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "BRZ_TO_SLV",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SRC_TO_BRONZE",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "BRZ_TO_SLV",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "SLV_TO_GLD",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "BRZ_TO_SLV",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "SLV_TO_GLD",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2024-03-05T00:30:25Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
